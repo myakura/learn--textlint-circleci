@@ -8,6 +8,7 @@
   "author": "Masataka Yakura",
   "license": "ISC",
   "devDependencies": {
-    "textlint": "^11.6.1"
+    "textlint": "^11.6.1",
+    "textlint-rule-no-todo": "^2.0.1"
   }
 }
