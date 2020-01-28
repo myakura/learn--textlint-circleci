@@ -5,5 +5,5 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Masataka Yakura",
-  "license": "ISC",
+  "license": "ISC"
 }
