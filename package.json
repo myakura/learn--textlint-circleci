@@ -2,8 +2,12 @@
   "name": "learn--textlint",
   "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "textlint": "textlint"
   },
   "author": "Masataka Yakura",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "textlint": "^11.6.1"
+  }
 }
