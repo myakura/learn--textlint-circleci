@@ -8,6 +8,14 @@ jobs:
     steps:
       - checkout
       - run: npm ci
+  setup_reviewdog:
+    docker:
+      - image: circleci/node:12
+        environment:
+          TZ: Asia/Tokyo
+    steps:
+      - run: curl -sfL https://raw.githubusercontent.com/reviewdog/reviewdog/master/install.sh| sh -s
+      - run: which reviewdog
   test:
     docker:
       - image: circleci/node:12
@@ -22,6 +30,7 @@ workflows:
   setup_and_test:
     jobs:
       - setup_node
+      - setup_reviewdog
       - test:
           requires:
             - setup_node
