@@ -22,4 +22,6 @@ workflows:
   setup_and_test:
     jobs:
       - setup_node
-      - test
+      - test:
+          requires:
+            - setup_node
