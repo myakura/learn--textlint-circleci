@@ -16,10 +16,7 @@ jobs:
     steps:
       - run:
           name: install reviewdog
-          command: |
-            curl --silent --fail --location https://raw.githubusercontent.com/reviewdog/reviewdog/master/install.sh | sh -s
-            export PATH=$(pwd)/bin:$PATH
-            reviewdog -version
+          command: curl --silent --fail --location https://raw.githubusercontent.com/reviewdog/reviewdog/master/install.sh | sh -s
   test:
     docker:
       - image: circleci/node:12
