@@ -16,6 +16,7 @@ jobs:
     steps:
       - run: curl -sfL https://raw.githubusercontent.com/reviewdog/reviewdog/master/install.sh| sh -s
       - run: export PATH="$(pwd)/bin/reviewdog:$PATH"
+      - run: echo $PATH
       - run: $(pwd)/bin/reviewdog -version
   test:
     docker:
