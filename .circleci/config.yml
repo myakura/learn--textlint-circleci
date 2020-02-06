@@ -16,7 +16,10 @@ jobs:
     steps:
       - run:
           name: install reviewdog
-          command: curl --silent --fail --location https://raw.githubusercontent.com/reviewdog/reviewdog/master/install.sh| sh -s -- -b /usr/local/bin/
+          command: curl --silent --fail --location https://raw.githubusercontent.com/reviewdog/reviewdog/master/install.sh | sh -s
+      - run:
+          name: add reviewdog to PATH
+          command: export PATH=$(pwd)/bin:$PATH
       - run: reviewdog -version
   test:
     docker:
