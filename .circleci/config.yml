@@ -19,7 +19,7 @@ jobs:
           command: echo $PATH && echo $(pwd) && ls
       - run:
           name: install reviewdog
-          command: curl --silent --fail --location https://raw.githubusercontent.com/reviewdog/reviewdog/master/install.sh| sh -sd
+          command: curl --silent --fail --location https://raw.githubusercontent.com/reviewdog/reviewdog/master/install.sh| sh -s
       - run: export PATH=$(pwd)/bin/reviewdog:$PATH && echo $PATH
       - run: ls
       - run: $(pwd)/bin/reviewdog -version
