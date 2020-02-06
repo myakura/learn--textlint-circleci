@@ -1,6 +1,14 @@
 version: 2.1
 jobs:
-  build:
+  setup_node:
+    docker:
+      - image: circleci/node:12
+        environment:
+          TZ: Asia/Tokyo
+    steps:
+      - checkout
+      - run: npm ci
+  test:
     docker:
       - image: circleci/node:12
         environment:
@@ -9,3 +17,9 @@ jobs:
       - checkout
       - run: npm ci
       - run: npm run test
+
+workflows:
+  setup_and_test:
+    jobs:
+      - setup_node
+      - test
