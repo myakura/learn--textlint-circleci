@@ -25,9 +25,9 @@ jobs:
       - persist_to_workspace:
           root: .
           paths:
-            - package-lock.json
-            - package.json
-            - *.md
+            - ./package-lock.json
+            - ./package.json
+            - ./*.md
   setup_reviewdog:
     docker:
       - image: circleci/node:12
