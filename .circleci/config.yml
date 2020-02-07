@@ -7,7 +7,27 @@ jobs:
           TZ: Asia/Tokyo
     steps:
       - checkout
+      - restore_cache:
+          name: Restore ~/.npm
+          key: dotnpm-{{ .Branch }}-{{ checksum "package-lock.json" }}
+      - run: node -v && npm -v
       - run: npm ci
+      - save_cache:
+          name: Cache ~/.npm
+          key: dotnpm-{{ .Branch }}-{{ checksum "package-lock.json" }}
+          paths:
+            - ~/.npm
+      - save_cache:
+          name: Cache node_modules
+          key: node-modules-{{ .Branch }}-{{ checksum "package-lock.json" }}
+          paths:
+            - node_modules
+      - persist_to_workspace:
+          root: .
+          paths:
+            - package-lock.json
+            - package.json
+            - *.md
   setup_reviewdog:
     docker:
       - image: circleci/node:12
@@ -23,15 +43,18 @@ jobs:
         environment:
           TZ: Asia/Tokyo
     steps:
-      - checkout
-      - run: npm ci
+      - attach_workspace:
+          at: .
+      - restore_cache:
+          name: Restore node_modules
+          key: node-modules-{{ .Branch }}-{{ checksum "package-lock.json" }}
       - run: npm run textlint -- ./README.md
 
 workflows:
   setup_and_test:
     jobs:
-      # - setup_node
+      - setup_node
       - setup_reviewdog
-      # - test:
-      #     requires:
-      #       - setup_node
+      - test:
+          requires:
+            - setup_node
