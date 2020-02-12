@@ -27,6 +27,7 @@ jobs:
           paths:
             - ./package-lock.json
             - ./package.json
+            - ./.textlintrc.json
             - ./*.md
   setup_reviewdog:
     docker:
