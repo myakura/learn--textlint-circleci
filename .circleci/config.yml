@@ -1,6 +1,6 @@
 version: 2.1
 jobs:
-  setup_node:
+  build:
     docker:
       - image: circleci/node:12
         environment:
@@ -17,45 +17,13 @@ jobs:
           key: dotnpm-{{ .Branch }}-{{ checksum "package-lock.json" }}
           paths:
             - ~/.npm
-      - save_cache:
-          name: Cache node_modules
-          key: node-modules-{{ .Branch }}-{{ checksum "package-lock.json" }}
-          paths:
-            - node_modules
-      - persist_to_workspace:
-          root: .
-          paths:
-            - ./package-lock.json
-            - ./package.json
-            - ./.textlintrc.json
-            - ./*.md
-  setup_reviewdog:
-    docker:
-      - image: circleci/node:12
-        environment:
-          TZ: Asia/Tokyo
-    steps:
       - run:
-          name: install reviewdog
+          name: Install reviewdog
           command: curl --silent --fail --location https://raw.githubusercontent.com/reviewdog/reviewdog/master/install.sh | sh -s
-  test:
-    docker:
-      - image: circleci/node:12
-        environment:
-          TZ: Asia/Tokyo
-    steps:
-      - attach_workspace:
-          at: .
-      - restore_cache:
-          name: Restore node_modules
-          key: node-modules-{{ .Branch }}-{{ checksum "package-lock.json" }}
-      - run: npm run textlint -- ./README.md
-
-workflows:
-  setup_and_test:
-    jobs:
-      - setup_node
-      - setup_reviewdog
-      - test:
-          requires:
-            - setup_node
+      - run:
+          name: textlint
+          command: npm run textlint -- ./*.md --format checkstyle | tee textlint_result
+      - run:
+          name: reviewdog
+          command: cat textlint_result | ./bin/reviewdog -f=checkstyle -name=textlint -reporter=github-pr-review
+          when: on_fail
