@@ -22,4 +22,8 @@ jobs:
           command: curl --silent --fail --location https://raw.githubusercontent.com/reviewdog/reviewdog/master/install.sh | sh -s
       - run:
           name: textlint
-          command: npm run textlint -- ./*.md
+          command: npm run textlint -- ./*.md --format checkstyle | tee textlint_result
+      - run:
+          name: reviewdog
+          command: cat textlint_result | ./bin/reviewdog -f=checkstyle -name=textlint -reporter=github-pr-review
+          when: on_fail
